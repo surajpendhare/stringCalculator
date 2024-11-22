@@ -1,6 +1,16 @@
 function add(numbers) {
   if (!numbers) return 0;
-  const numsArr = numbers.split(/,|\n/).map((item) => parseInt(item));
+
+  let delimiter = /,|\n/;
+  if (numbers.startsWith("//")) {
+    const match = numbers.match(/^\/\/(.+)\n/);
+    if (match) {
+      delimiter = new RegExp(match[1]); 
+      numbers = numbers.slice(match[0].length);
+    }
+  }
+
+  const numsArr = numbers.split(delimiter).map((item) => parseInt(item));
   return numsArr.reduce((sum, num) => sum + num, 0);
 }
 
@@ -20,6 +30,12 @@ function add(numbers) {
 // console.log(add("1,2,3"));
 // console.log(add("5,10,15,20, 25, 30"));
 
-console.assert(add("1\n2,3") === 6, 'Test failed: add("1\n2,3") should return 6');
-console.assert(add("4\n5\n6") === 15, 'Test failed: add("4\n5\n6") should return 15');
-console.log(add("1\n2,3"));
+// console.assert(add("1\n2,3") === 6, 'Test failed: add("1\n2,3") should return 6');
+// console.assert(add("4\n5\n6") === 15, 'Test failed: add("4\n5\n6") should return 15');
+// console.log(add("1\n2,3"));
+
+console.assert(
+  add("//;\n1;2") === 3,
+  'Test failed: add("//;\n1;2") should return 3'
+);
+console.log(add("//;\n1;2"));
