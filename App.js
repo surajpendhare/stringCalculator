@@ -3,12 +3,17 @@ function add(numbers) {
 
   let delimiter = /,|\n/;
   if (numbers.startsWith("//")) {
-    const match = numbers.match(/^\/\/(.+)\n/);
-    if (match) {
-      delimiter = new RegExp(match[1]); 
-      numbers = numbers.slice(match[0].length);
-    }
+      const match = numbers.match(/^\/\/(.+)\n/);
+      if (match) {
+          delimiter = new RegExp(match[1]);
+          numbers = numbers.slice(match[0].length);
+      }
   }
+
+  const negatives = nums.filter(num => num < 0);
+    if (negatives.length > 0) {
+        throw new Error(`Negative numbers not allowed: ${negatives.join(", ")}`);
+    }
 
   const numsArr = numbers.split(delimiter).map((item) => parseInt(item));
   return numsArr.reduce((sum, num) => sum + num, 0);
@@ -34,8 +39,25 @@ function add(numbers) {
 // console.assert(add("4\n5\n6") === 15, 'Test failed: add("4\n5\n6") should return 15');
 // console.log(add("1\n2,3"));
 
-console.assert(
-  add("//;\n1;2") === 3,
-  'Test failed: add("//;\n1;2") should return 3'
-);
-console.log(add("//;\n1;2"));
+// console.assert(
+//   add("//;\n1;2") === 3,
+//   'Test failed: add("//;\n1;2") should return 3'
+// );
+// console.log(add("//;\n1;2"));
+
+
+//Negative numbers
+try {
+    add("1,-2,3");
+} catch (error) {
+    console.assert(error.message === "Negative numbers not allowed: -2", 'Test failed: Negative number check');
+}
+
+try {
+    add("1,-2,-3");
+} catch (error) {
+    console.assert(error.message === "Negative numbers not allowed: -2, -3", 'Test failed: Multiple negative number check');
+}
+
+
+
