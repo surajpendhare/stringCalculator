@@ -3,4 +3,5 @@ function add(numbers) {
     return parseInt(numbers, 10);
 }
 
-console.log(add("1"))
+console.assert(add("") === 0, 'Test failed: add("") should return 0');
+console.log(add("0"))
